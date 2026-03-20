@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pick Your Team</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <main class="page-wrap">
+        <header class="top-bar">
+            <h1>Select Exactly 6 Pokemon</h1>
+            <div class="controls-right">
+                <span id="selectedCount" class="selected-count">0 / 6 selected</span>
+                <button type="button" id="autoTeamBtn" class="btn secondary">Generate Best Team</button>
+            </div>
+        </header>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-wrap">
+                    {% for message in messages %}
+                        <div class="flash">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form id="teamForm" method="post" action="{{ url_for('submit_team') }}">
+            <section class="card-grid" id="pokemonGrid">
+                {% for p in pokemon_pool %}
+                    <article class="pokemon-card" data-id="{{ p.id }}" data-profit="{{ p.profit }}">
+                        <input
+                            class="card-check"
+                            type="checkbox"
+                            id="pick_{{ p.id }}"
+                            name="selected_pokemon"
+                            value="{{ p.id }}"
+                        >
+
+                        <img src="{{ p.image_url }}" alt="{{ p.name }} image" loading="lazy">
+                        <h3>{{ p.name|title }}</h3>
+
+                        {% if not hide_profit %}
+                            <p class="profit">Profit: {{ p.profit }}</p>
+                        {% else %}
+                            <p class="profit hidden-profit">Profit: ???</p>
+                        {% endif %}
+
+                        <audio id="cry_{{ p.id }}" preload="none">
+                            <source src="{{ p.cry_url }}" type="audio/wav">
+                        </audio>
+                        <button type="button" class="btn tiny cry-btn" data-audio="cry_{{ p.id }}">Play Cry</button>
+                    </article>
+                {% endfor %}
+            </section>
+
+            <div class="action-row">
+                <button type="submit" class="btn primary">Submit Team</button>
+                <a class="btn ghost" href="{{ url_for('game', hide_profit=1 if hide_profit else 0) }}">Play Again</a>
+            </div>
+        </form>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
