@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Team Optimizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="home-body">
+    <main class="home-wrap">
+        <h1>Pokemon Team Optimization Game</h1>
+        <p>Pick the best 6 Pokemon from 10 and beat the optimizer.</p>
+
+        <form id="loadGameForm" action="{{ url_for('game') }}" method="get" class="home-controls">
+            <label class="difficulty-row">
+                <input type="checkbox" name="hide_profit" value="1">
+                Difficulty Mode (hide profits)
+            </label>
+            <button type="submit" class="btn primary" id="loadGameBtn">Load Game</button>
+        </form>
+
+        <div id="loadingOverlay" class="loading-overlay" aria-hidden="true">
+            <div class="spinner"></div>
+            <p>Loading Pokemon...</p>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
