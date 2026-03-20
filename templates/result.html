@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <main class="page-wrap">
+        <header class="result-header">
+            <h1>Battle Result</h1>
+            {% if perfect %}
+                <p class="result-message perfect">Perfect Team! You matched the optimizer.</p>
+            {% else %}
+                <p class="result-message">You were {{ difference }} profit points away from optimal.</p>
+            {% endif %}
+        </header>
+
+        <section class="result-section">
+            <div class="result-title-row">
+                <h2>Your Team</h2>
+                <strong>Total Profit: {{ user_profit }}</strong>
+            </div>
+            <div class="card-grid compact">
+                {% for p in user_team %}
+                    <article class="pokemon-card selected">
+                        <img src="{{ p.image_url }}" alt="{{ p.name }} image">
+                        <h3>{{ p.name|title }}</h3>
+                        <p class="profit">Profit: {{ p.profit }}</p>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="result-section">
+            <div class="result-title-row">
+                <h2>Optimal Team</h2>
+                <strong>Total Profit: {{ optimal_profit }}</strong>
+            </div>
+            <div class="card-grid compact">
+                {% for p in optimal_team %}
+                    <article class="pokemon-card optimal">
+                        <img src="{{ p.image_url }}" alt="{{ p.name }} image">
+                        <h3>{{ p.name|title }}</h3>
+                        <p class="profit">Profit: {{ p.profit }}</p>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <div class="action-row">
+            <a class="btn primary" href="{{ url_for('game', hide_profit=1 if hide_profit else 0) }}">Play Again</a>
+            <a class="btn ghost" href="{{ url_for('index') }}">Home</a>
+        </div>
+    </main>
+</body>
+</html>
